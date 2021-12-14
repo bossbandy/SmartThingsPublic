@@ -2,8 +2,8 @@ preferences {
 	section("Internal Access"){
 		input "Broadlink RM+", "text", title: "ID & PW for RM Plugin or RM Bridge(Optional)", required: false
 		input "192.168.0.110", "text", title: "IP for RM Plugin or RM Bridge or HA(Required for all)", required: true
-		input "internal_port", "text", title: "Port(Required for all)", required: true
-		input "internal_on_path", "text", title: "On Path(Required for all)", required: true
+		input "internal_port", "text", title: "Port(Required for all)", required: false
+		input "internal_on_path", "text", title: "On Path(Required for all)", required: false
         input "internal_off_path", "text", title: "Off Path", required: false
 	}
 }
@@ -22,7 +22,7 @@ def push(String path) {
     if (path){
     	def userpass = "Basic " + id_pw.encodeAsBase64().toString()
 		def result = new physicalgraph.device.HubAction(
-				method: "POST",		/* If you want to use the RM Bridge, change the method from "POST" to "Get" */
+				method: "Get",		/* If you want to use the RM Bridge, change the method from "POST" to "Get" */
 				path: "${path}",
 				headers: [HOST: "${internal_ip}:${internal_port}", AUTHORIZATION: "${userpass}"],
                 body: ["entity_id":"${body_data_for_ha}"]
